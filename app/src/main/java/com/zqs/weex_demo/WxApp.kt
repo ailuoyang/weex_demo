@@ -3,15 +3,15 @@ package com.zqs.weex_demo
 import android.app.Application
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import org.apache.weex.InitConfig
 import org.apache.weex.WXEnvironment
 import org.apache.weex.WXSDKEngine
 import org.apache.weex.adapter.DefaultWXHttpAdapter
-import org.apache.weex.adapter.IWXHttpAdapter
 import org.apache.weex.adapter.IWXImgLoaderAdapter
 import org.apache.weex.common.WXImageStrategy
-import org.apache.weex.common.WXRequest
 import org.apache.weex.dom.WXImageQuality
+import java.util.*
 
 /**
 @author zhangqisheng
@@ -25,7 +25,8 @@ class WxApp: Application() {
         val config = InitConfig.Builder() //图片库接口
             .setImgAdapter(object : IWXImgLoaderAdapter {
                 override fun setImage(url: String?, view: ImageView?, quality: WXImageQuality?, strategy: WXImageStrategy?) {
-                    Glide.with(view!!).load(url).into(view)
+                    Glide.with(view!!).load(url+"?"+UUID.randomUUID()).skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).into(view)
                 }
 
             }) //网络库接口
